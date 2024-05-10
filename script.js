@@ -13,7 +13,10 @@ const battleCruiserLaserSound = null
 const battleCruiserYamatoCannonSound = null
 const battleCruiserAbandonShipSound = null
 
-
+const scourgeExplosionSound = null
+const scourgeDeathSound = null
+const scourgeSpawnSound = null
+const scourgeDestroyedPoints = 100;
 
 /////////EVENTLISTENERS//////
 optionsMenuButton.addEventListener('click', () => {

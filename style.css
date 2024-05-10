@@ -1,18 +1,44 @@
-#battlecruiser {
+
+/* Need to make more than one Battlecruiser hitbox to conform to the shape better, so there are no gaps.*/
+
+#battleCruiserHitBox {
     color: white;
     border: solid white;
-    display: flex;
-    flex-direction: flex-end;
+    display: center;
     margin-top: 500px;
-    margin-left: 880px;
-    margin-right: 880px;
-
-
+    margin-left: 1050px;
+    margin-right: 980px;
+    height: 550px;
+    width: auto;
+}
+#battleCruiserImage {
+    height: auto;
+    width: 475px;
+    margin-left: 18px;
+}
+#battleCruiserImageContainer {
+    height: null;
 
 }
 body {
     background-color: black;
-
+}
+#scoreDisplay {
+    color: white;
+    display: flex;
+    margin-left: 450px;
+}
+#scoreValue {
+    color: white;
+    display: flex;
+    margin-left: 450px;
+}
+#optionsMenuButton {
+    color: lightblue;
+    border: solid darkcyan;
+    background-color: black;
+    display: flex;
+    margin-left: 450px;
 
 
 }
