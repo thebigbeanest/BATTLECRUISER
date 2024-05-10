@@ -1,0 +1,18 @@
+#battlecruiser {
+    color: white;
+    border: solid white;
+    display: flex;
+    flex-direction: flex-end;
+    margin-top: 500px;
+    margin-left: 880px;
+    margin-right: 880px;
+
+
+
+}
+body {
+    background-color: black;
+
+
+
+}
