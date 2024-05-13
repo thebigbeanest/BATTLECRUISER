@@ -51,3 +51,5 @@ A game where you control a large Battlecruiser in the center of the screen, figh
 - https://stackoverflow.com/questions/4270485/drawing-lines-on-html-page
 - https://stackoverflow.com/questions/20762079/moving-an-object-towards-a-point-in-javascript
 - https://stackoverflow.com/questions/58559992/how-to-move-element-from-one-point-to-another-with-animation
+- https://gist.github.com/straker/afc4e2a30b6df772a5f9f6ef01751d41
+-

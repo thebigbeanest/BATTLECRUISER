@@ -47,9 +47,9 @@ body {
 #scourgeSpawnArea {
     color: white;
 }
-/* #tarsonis {
+#tarsonis {
     position: absolute; 
     top: 60%; 
     left: 80%; 
     transform: translate(-50%, -50%); 
-} */
+}

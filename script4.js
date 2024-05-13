@@ -1,5 +1,5 @@
-let speedMin = 1;
-let speedMax = 2;
+let speedMin = 5;
+let speedMax = 5;
 
 
 function destroy() {
@@ -9,25 +9,27 @@ function destroy() {
 }
 
 function moveScourge() {
-  const div = document.querySelectorAll('.scourge');
-  const target = document.getElementById('battleCruiserHitBox');
-  const rect = target.getBoundingClientRect();
-
-  // Calculate the angle between the scourge and the target
-  const dx = rect.left - div.offsetLeft;
-  const dy = rect.top - div.offsetTop;
-  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-  // Set the rotation angle of the scourge image
-  div.style.transform = `rotate(${angle}deg)`;
-
-  // Move the scourge towards the target
-  let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
-  let transitionString = `all ${speed}s ease-in-out`;
-  div.style.transition = transitionString;
-  div.style.top = rect.top + "px";
-  div.style.left = rect.left + "px";
-}
+    const divs = document.querySelectorAll('.scourge');
+    const target = document.getElementById('battleCruiserHitBox');
+    const rect = target.getBoundingClientRect();
+  
+    divs.forEach(div => {
+      // Calculate the angle between the scourge and the target
+      const dx = rect.left - div.offsetLeft;
+      const dy = rect.top - div.offsetTop;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+  
+      // Set the rotation angle of the scourge image
+      div.style.transform = `rotate(${angle}deg)`;
+  
+      // Move the scourge towards the target
+      let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
+      let transitionString = `all ${speed}s ease-in-out`;
+      div.style.transition = transitionString;
+      div.style.top = rect.top + "px";
+      div.style.left = rect.left + "px";
+    });
+  }
 
 function reset() {
   const div = document.querySelectorAll('.scourge');
@@ -60,11 +62,18 @@ function spawnScourge() {
     scourge.style.position = 'absolute';
     scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
     scourge.style.left = `${randomX}px`;
-    document.getElementById('scourge1').appendChild(scourge);
+    document.querySelector('.scourge').appendChild(scourge);
   }
+  const playButton = document.getElementById('musicButton');
+    playButton.addEventListener('click', function() {
+        // Play music1
+        const music = new Audio('assets/Music1.mp3');
+        music.loop = true; // loop the music
+        music.play();
+    })
 }
 function startGame() {
     spawnScourge(); // Call the function to spawn scourge when the game begins
     moveScourge(); // Start moving the scourge towards the battlecruiser
-  }
-startGame();
+    }
+startGame()
