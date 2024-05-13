@@ -42,7 +42,7 @@ body {
 .scourge {
     height: auto;
     width: 60px;
-    margin-left: 450px;
+    margin-left: 0px;
 }
 #scourgeSpawnArea {
     color: white;
@@ -52,4 +52,13 @@ body {
     top: 60%; 
     left: 80%; 
     transform: translate(-50%, -50%); 
+}
+.laser {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-top: 100px solid white; /* Change to top border */
+    transform-origin: top; /* Change the rotation origin to the top */
 }

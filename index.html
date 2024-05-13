@@ -12,7 +12,7 @@
     <audio id="battlecruiserOperational"></audio>
     <audio id="fleetIsPrepped"></audio>
     <audio id="nuclearMissileReady"></audio>
-    <audio id="laserHit1"></audio>
+    <audio id="laserHit1" src="assets/laserHit1.wav"></audio>
     <audio id="battleCruiserDamage"></audio>
     <audio id="cannonShoot"></audio>
     <audio id="autoCannonShoot"></audio>
@@ -20,6 +20,7 @@
     <audio id="scourgeNoise"></audio>
     <audio id="music1" src="assets/Music1.mp3"></audio>
     <div id= bodyElement>
+        <div id="gameArea">
         <div id= scoreDisplay>SCORE:</div>
             <button onclick="moveScourge();">Move</button>
             <button onclick="reset();">Reset</button>
@@ -61,7 +62,8 @@
 
 
 
-        <img class ="planet" id="tarsonis" src="assets/TARSONIS.png">
+            <img class ="planet" id="tarsonis" src="assets/TARSONIS.png">
+        </div>  
     </div>
 </body>
 </html>
