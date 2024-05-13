@@ -1,5 +1,5 @@
 let speedMin = 1;
-let speedMax = 5;
+let speedMax = 2;
 
 
 function destroy() {
@@ -45,7 +45,7 @@ function reset() {
 
 function spawnScourge() {
   const numberOfScourge = 4; // Number of scourge to spawn
-  const gameAreaWidth = 2000; // Width of the game area
+  const gameAreaWidth = 1500; // Width of the game area
   
   // Loop to create and position each scourge element
   for (let i = 1; i <= numberOfScourge; i++) {
@@ -58,7 +58,7 @@ function spawnScourge() {
     // Randomly position the scourge at the top of the screen
     const randomX = Math.random() * (gameAreaWidth - 20);
     scourge.style.position = 'absolute';
-    scourge.style.top = '-100px'; // Position above the game area
+    scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
     scourge.style.left = `${randomX}px`;
     document.getElementById('scourge1').appendChild(scourge);
   }

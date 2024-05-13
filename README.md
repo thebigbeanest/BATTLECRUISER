@@ -29,6 +29,12 @@ A game where you control a large Battlecruiser in the center of the screen, figh
 - Fixed some redundant css style options that did nothing.
 - Commented in some future plans.
 
+### Day 3 Commit 2 Progress
+-
+-
+-
+-
+-
 
 # SOURCES:
 - CHATGPT (Did not code this entire project, just asked it questions on how to do specific things)
@@ -40,4 +46,8 @@ A game where you control a large Battlecruiser in the center of the screen, figh
 - https://stackoverflow.com/questions/28518284/javascript-create-an-image-and-make-it-move
 - https://www.youtube.com/watch?v=F3ZFekF-JNw&list=LL&index=4 (For the BATTLECRUISER_Title_Card image)
 - My friend who works as FullStack Software Developer
-- 
+- https://www.w3schools.com/cssref/css3_pr_mediaquery.php
+- https://stackoverflow.com/questions/7790725/javascript-track-mouse-position
+- https://stackoverflow.com/questions/4270485/drawing-lines-on-html-page
+- https://stackoverflow.com/questions/20762079/moving-an-object-towards-a-point-in-javascript
+- https://stackoverflow.com/questions/58559992/how-to-move-element-from-one-point-to-another-with-animation
