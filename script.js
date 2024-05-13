@@ -1,5 +1,7 @@
 /////////LET//////////
 let gameOver = false
+let scourgePositionY = null
+let scourgePositionX = null
 
 /////////CONST////////
 const battleCruiserHp = 550
@@ -31,18 +33,11 @@ checkGameOver = (gameOver) => {
 }
 
 init = () => {
-
-
-
-
 }
 gameOver = () => {
     exit
-
-
 }
 ///////SOUND FUNCTIONS//////
-
 lostHpSound = () => {
     if (battleCruiserHp <= 550)
          Audio
@@ -51,5 +46,4 @@ lostHpSound = () => {
 
 
 }
-
 ////////CONSOLE LOGS////////
