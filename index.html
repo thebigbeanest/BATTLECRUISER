@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="script2.js"></script>
+    <script src="script4.js" defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -20,13 +20,19 @@
     <audio id="scourgeNoise"></audio>
     <div id= bodyElement>
         <div id= scoreDisplay>SCORE:</div>
+            <button onclick="moveScourge();">Move</button>
+            <button onclick="reset();">Reset</button>
             <div id="scoreValue">PLACEHOLDER</div>
                 <button id="optionsMenuButton">Options</button>
-                    <div id="scourgeHitBox">SCOURGE HITBOX</div>
-                        <img class="scourge" src="assets/SCOURGE.png" alt="Scourge Image">
-                        <img class="scourge" src="assets/SCOURGE.png" alt="Scourge Image">
-                        <img class="scourge" src="assets/SCOURGE.png" alt="Scourge Image">
-                        <img class="scourge" src="assets/SCOURGE.png" alt="Scourge Image">
+                    <div id="scourgeSpawnArea"></div>
+                        <!-- <img class="scourge" id="scourge1" src="assets/SCOURGE.png" alt="Scourge Image">
+                        <img class="scourge" id="scourge2" src="assets/SCOURGE.png" alt="Scourge Image">
+                        <img class="scourge" id="scourge3" src="assets/SCOURGE.png" alt="Scourge Image">
+                        <img class="scourge" id="scourge4" src="assets/SCOURGE.png" alt="Scourge Image"> -->
+                        <div class="scourge" id="scourge1"></div>
+                        <div class="scourge" id="scourge2"></div>
+                        <div class="scourge" id="scourge3"></div>
+                        <div class="scourge" id="scourge4"></div>
 
 
 

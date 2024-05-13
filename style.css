@@ -18,7 +18,6 @@
 }
 #battleCruiserImageContainer {
     height: null;
-
 }
 body {
     background-color: black;
@@ -40,11 +39,15 @@ body {
     display: flex;
     margin-left: 450px;
 }
-#scourge {
+.scourge {
     height: auto;
     width: 60px;
     margin-left: 450px;
 }
-#scourgeHitBox {
+#scourgeSpawnArea {
     color: white;
+}
+#scourge1 {
+    visibility: visible;
+    position: relative;
 }

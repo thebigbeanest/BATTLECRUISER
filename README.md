@@ -37,3 +37,7 @@ A game where you control a large Battlecruiser in the center of the screen, figh
 - https://github.com/patrickhliu/missile-command/blob/master/script.js (Used as a reference for formatting information) Unfortunately this project uses the JS canvas library, which I am not skilled enough at to use without just copying others.
 - sounds-resource.com (For the sound effects) 
 - AutoDeskSketchbook (For drawing the BATTLECRUISER.png image.)
+- https://stackoverflow.com/questions/28518284/javascript-create-an-image-and-make-it-move
+- https://www.youtube.com/watch?v=F3ZFekF-JNw&list=LL&index=4 (For the BATTLECRUISER_Title_Card image)
+- My friend who works as FullStack Software Developer
+- 
