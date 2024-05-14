@@ -29,7 +29,43 @@ function moveScourge() {
       div.style.top = rect.top + "px";
       div.style.left = rect.left + "px";
     });
-  }
+}
+
+function createScourge() {
+    const scourge = document.createElement('img');
+    scourge.className = 'scourge';
+    scourge.src = 'assets/SCOURGE.png';
+    scourge.alt = 'Scourge Image';
+    
+    // Randomly position the scourge at the top of the screen
+    const gameAreaWidth = 1500; // Width of the game area
+    const randomX = Math.random() * (gameAreaWidth - 20);
+    scourge.style.position = 'absolute';
+    scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
+    scourge.style.left = `${randomX}px`;
+    document.getElementById('gameArea').appendChild(scourge);
+
+    // Move the newly spawned scourge
+    moveScourge();
+}
+
+// Function to create new scourge after delay
+function spawnNewScourge() {
+    createScourge();
+}
+
+// Check for scourge destruction and spawn new ones
+document.addEventListener('DOMNodeRemoved', function(event) {
+    if (event.target && event.target.classList.contains('scourge')) {
+        spawnNewScourge();
+    }
+});
+
+// Initial spawning of scourge
+const numberOfScourge = 4; // Number of initial scourge to spawn
+for (let i = 0; i < numberOfScourge; i++) {
+    spawnNewScourge();
+}
 
   document.addEventListener('DOMContentLoaded', function() {
     const gameArea = document.getElementById('gameArea');
@@ -119,46 +155,58 @@ function reset() {
   console.log(div.style.top);
 }
 
-function spawnScourge() {
-    const gameAreaWidth = 1500; // Width of the game area
+function moveScourge() {
+    const divs = document.querySelectorAll('.scourge');
+    const target = document.getElementById('battleCruiserHitBox');
+    const rect = target.getBoundingClientRect();
   
-    function createScourge() {
-      const scourge = document.createElement('img');
-      scourge.className = 'scourge';
-      scourge.src = 'assets/SCOURGE.png';
-      scourge.alt = 'Scourge Image';
+    divs.forEach(div => {
+      // Calculate the angle between the scourge and the target
+      const dx = rect.left - div.offsetLeft;
+      const dy = rect.top - div.offsetTop;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
   
-      // Randomly position the scourge at the top of the screen
-      const randomX = Math.random() * (gameAreaWidth - 20);
-      scourge.style.position = 'absolute';
-      scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
-      scourge.style.left = `${randomX}px`;
-      document.getElementById('gameArea').appendChild(scourge);
-    }
+      // Set the rotation angle of the scourge image
+      div.style.transform = `rotate(${angle}deg)`;
   
-    // Create initial scourge
-    const numberOfScourge = 4; // Number of initial scourge to spawn
-    for (let i = 1; i <= numberOfScourge; i++) {
-      createScourge();
-    }
-  
-    // Function to create new scourge after delay
-    function spawnNewScourge() {
-      setTimeout(createScourge, Math.random() * 1000 + 1000); // Spawn new scourge after 1-2 seconds
-    }
-  
-    // Check for scourge destruction and spawn new ones
-    document.addEventListener('DOMNodeRemoved', function(event) {
-      if (event.target && event.target.classList.contains('scourge')) {
-        spawnNewScourge();
-      }
+      // Move the scourge towards the target
+      let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
+      let transitionString = `all ${speed}s ease-in-out`;
+      div.style.transition = transitionString;
+      div.style.top = rect.top + "px";
+      div.style.left = rect.left + "px";
     });
-  }
+}
 
-  spawnScourge();
+function createScourge() {
+    const scourge = document.createElement('img');
+    scourge.className = 'scourge';
+    scourge.src = 'assets/SCOURGE.png';
+    scourge.alt = 'Scourge Image';
+    
+    // Randomly position the scourge at the top of the screen
+    const gameAreaWidth = 1500; // Width of the game area
+    const randomX = Math.random() * (gameAreaWidth - 20);
+    scourge.style.position = 'absolute';
+    scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
+    scourge.style.left = `${randomX}px`;
+    document.getElementById('gameArea').appendChild(scourge);
 
+    // Move the newly spawned scourge
+    moveScourge();
+}
 
+// Function to create new scourge after delay
+function spawnNewScourge() {
+    createScourge();
+}
 
+// Check for scourge destruction and spawn new ones
+document.addEventListener('mutationObserver', function(event) {
+    if (event.target && event.target.classList.contains('scourge')) {
+        spawnNewScourge();
+    }
+});
 
 
     const laserSound = document.getElementById('laserHit1');
@@ -178,7 +226,7 @@ function spawnScourge() {
         music.play();
     })
 function startGame() {
-    spawnScourge(); // Call the function to spawn scourge when the game begins
+    createScourge(); // Call the function to spawn scourge when the game begins
     moveScourge(); // Start moving the scourge towards the battlecruiser
     }
 startGame()
