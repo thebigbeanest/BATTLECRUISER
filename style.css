@@ -19,6 +19,9 @@
 #battleCruiserImageContainer {
     height: null;
 }
+body {
+    background-color: black;
+}
 #scoreDisplay {
     color: white;
     display: flex;
@@ -59,30 +62,10 @@
     border-top: 100px solid white; /* Change to top border */
     transform-origin: top; /* Change the rotation origin to the top */
 }
-body {
-    margin: 0;
-    padding: 0;
-    background-color: black; /* Set the background color of the page */
-}
-
-#titleCard {
-    width: 100vw;
-    height: 100vh;
+.asteroid {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-left: 1000px;
 }
-
-#startMessage {
-    color: white;
-    font-size: 24px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-#game {
-    width: 100vw;
-    height: 100vh;
-    background-color: black; /* Set the background color of the game section */
-}
+ @media screen {
+    
+ }

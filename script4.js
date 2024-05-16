@@ -1,5 +1,5 @@
-let speedMin = 10;
-let speedMax = 10;
+let speedMin = 12;
+let speedMax = 12;
 
 
 function destroy() {
@@ -26,8 +26,8 @@ function moveScourge() {
       let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
       let transitionString = `all ${speed}s ease-in-out`;
       div.style.transition = transitionString;
-      div.style.top = rect.top + "px";
-      div.style.left = rect.left + "px";
+      div.style.top = rect.top + height + "px";
+      div.style.left = rect.left + width + "px";
     });
 }
 
@@ -38,7 +38,7 @@ function createScourge() {
     scourge.alt = 'Scourge Image';
     
     // Randomly position the scourge at the top of the screen
-    const gameAreaWidth = 1500; // Width of the game area
+    const gameAreaWidth = 3000; // Width of the game area
     const randomX = Math.random() * (gameAreaWidth - 20);
     scourge.style.position = 'absolute';
     scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
@@ -47,6 +47,29 @@ function createScourge() {
 
     // Move the newly spawned scourge
     moveScourge();
+}
+
+
+
+function checkWin() {
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const score = parseInt(scoreDisplay.innerText);
+    
+    if (score >= 100) {
+        // Display "You Win" screen
+        const winScreen = document.createElement('div');
+        winScreen.textContent = 'You Win!';
+        winScreen.style.position = 'fixed';
+        winScreen.style.top = '50%';
+        winScreen.style.left = '50%';
+        winScreen.style.transform = 'translate(-50%, -50%)';
+        winScreen.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        winScreen.style.color = 'white';
+        winScreen.style.padding = '20px';
+        winScreen.style.fontSize = '24px';
+        winScreen.style.zIndex = '9999';
+        document.body.appendChild(winScreen);
+    }
 }
 
 // Function to create new scourge after delay
@@ -60,9 +83,56 @@ document.addEventListener('DOMNodeRemoved', function(event) {
         spawnNewScourge();
     }
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const gameArea = document.getElementById('gameArea');
+    const gameAreaRect = gameArea.getBoundingClientRect();
+    const asteroidWidth = 100; // Width of the asteroid images
+    const asteroidHeight = 100; // Height of the asteroid images
+    const spawnInterval = 1000; // Interval between spawning asteroids (in milliseconds)
+    const moveSpeed = 2; // Speed of the asteroid movement
+
+    // Array of asteroid image paths
+    const asteroidImages = [
+        'assets/asteroid1.png',
+        'assets/asteroid2.png',
+        'assets/asteroid3.png'
+    ];
+
+    function createAsteroid() {
+        const asteroid = document.createElement('img');
+        const randomIndex = Math.floor(Math.random() * asteroidImages.length); // Generate a random index
+        asteroid.className = 'asteroid';
+        asteroid.src = asteroidImages[randomIndex]; // Assign a random image from the array
+        asteroid.style.width = asteroidWidth + 'px';
+        asteroid.style.height = asteroidHeight + 'px';
+        
+        // Randomly position the asteroid horizontally within the right half of the game area
+        asteroid.style.left = Math.random() * (gameAreaRect.width / 2) + (gameAreaRect.width / 2) + 'px';
+        
+        // Start above the game area
+        asteroid.style.top = '-' + (asteroidHeight * 2) + 'px'; // Set initial top position higher above the game area
+        
+        gameArea.appendChild(asteroid);
+
+        // Move the asteroid downwards
+        const moveInterval = setInterval(() => {
+            const asteroidRect = asteroid.getBoundingClientRect();
+            const asteroidBottom = asteroidRect.top + asteroidRect.height; // Calculate bottom position based on the bounding rectangle
+            if (asteroidBottom < gameAreaRect.bottom) {
+                asteroid.style.top = (parseFloat(asteroid.style.top) + moveSpeed) + 'px';
+            } else {
+                clearInterval(moveInterval);
+                asteroid.remove();
+            }
+        }, 16); // Approximate 60 FPS
+    }
+
+    // Spawn asteroids at regular intervals
+    setInterval(createAsteroid, spawnInterval);
+});
 
 // Initial spawning of scourge
-const numberOfScourge = 4; // Number of initial scourge to spawn
+const numberOfScourge = 10; // Number of initial scourge to spawn
 for (let i = 0; i < numberOfScourge; i++) {
     spawnNewScourge();
 }
@@ -115,27 +185,119 @@ for (let i = 0; i < numberOfScourge; i++) {
         }, 10); // Interval time in milliseconds
     }
 
-    // Function to check for collision with scourge
-    function checkForCollision(laser) {
-        const scourgeList = document.querySelectorAll('.scourge');
-        const laserRect = laser.getBoundingClientRect();
-        
-        for (let i = 0; i < scourgeList.length; i++) {
-            const scourge = scourgeList[i];
-            const scourgeRect = scourge.getBoundingClientRect();
-            if (
-                laserRect.left < scourgeRect.right &&
-                laserRect.right > scourgeRect.left &&
-                laserRect.top < scourgeRect.bottom &&
-                laserRect.bottom > scourgeRect.top
-            ) {
-                // Collision detected, remove the scourge
-                scourge.remove();
-                return true;
-            }
-        }
-        return false;
+
+
+// Array of sound effect file paths
+const deathSounds = [
+    'assets/zavdth00.wav',
+    'assets/zavpss01.wav',
+    'assets/scourgeDeath.wav',
+    // Add more sound effect paths as needed
+];
+
+// Function to play a random sound effect when a scourge is destroyed
+function playRandomScourgeDestroyedSound() {
+    // Randomly select a sound effect from the array
+    const randomIndex = Math.floor(Math.random() * deathSounds.length);
+    const randomSound = deathSounds[randomIndex];
+    
+    // Create an audio element for the selected sound effect
+    const audio = new Audio(randomSound);
+    
+    // Play the selected sound effect
+    audio.play();
+}
+
+
+let yamatoCannonReady = true;
+
+// Event listener for Spacebar key press
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+        yamatoCannon();
     }
+});
+
+function yamatoCannon() {
+    if (yamatoCannonReady) {
+        // Play charging sound effect
+        playChargingSound();
+            const yamatoCharge = 
+
+        // Set yamatoCannonReady to false to prevent firing again immediately
+        yamatoCannonReady = false;
+
+        // Wait for 12 seconds (recharge time)
+        setTimeout(() => {
+            // Play firing sound effect
+            playFiringSound();
+
+            // Display visual effect (giant beam laser)
+            displayBeamLaser();
+
+            // Clear all scourge elements from the screen
+            clearScourge();
+            function clearScourge() {
+                const scourgeList = document.querySelectorAll('.scourge');
+                scourgeList.forEach(scourge => {
+                    scourge.remove();
+                });
+            }
+            // Set yamatoCannonReady to true after recharge time
+            yamatoCannonReady = true;
+
+            // Play sound effect for cannon recharged
+            playRechargedSound();
+        }, 12000); // 12 seconds in milliseconds
+    }
+}
+
+// Other functions remain the same...
+
+// Function to check for collision with scourge
+function checkForCollision(laser) {
+    const scourgeList = document.querySelectorAll('.scourge');
+    const laserRect = laser.getBoundingClientRect();
+    
+    for (let i = 0; i < scourgeList.length; i++) {
+        const scourge = scourgeList[i];
+        const scourgeRect = scourge.getBoundingClientRect();
+        if (
+            laserRect.left < scourgeRect.right &&
+            laserRect.right > scourgeRect.left &&
+            laserRect.top < scourgeRect.bottom &&
+            laserRect.bottom > scourgeRect.top
+        ) {
+            // Collision detected, remove the scourge
+            scourge.remove();
+            
+            // Play a random sound effect
+            playRandomScourgeDestroyedSound();
+            
+            // Add 10 points to the score
+            addToScore(10);
+            
+            return true;
+        }
+    }
+    return false;
+}
+
+// Function to add points to the score
+function addToScore(points) {
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    let currentScore = parseInt(scoreDisplay.innerText);
+    currentScore += points;
+    scoreDisplay.innerText = currentScore;
+}
+
+// Function to play the sound effect when a scourge is destroyed
+function playScourgeDestroyedSound() {
+    // Get the audio element
+    const soundEffect = document.getElementById('scourgeDestroyedSound');
+    // Play the sound effect
+    soundEffect.play();
+}
 
     // Event listener for mouse click to shoot laser
     gameArea.addEventListener('click', shootLaser);
@@ -158,23 +320,25 @@ function reset() {
 function moveScourge() {
     const divs = document.querySelectorAll('.scourge');
     const target = document.getElementById('battleCruiserHitBox');
-    const rect = target.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const targetCenterX = targetRect.left + targetRect.width / 2; // Calculate the x-coordinate of the center of the target
+    const targetCenterY = targetRect.top + targetRect.height / 2; // Calculate the y-coordinate of the center of the target
   
     divs.forEach(div => {
-      // Calculate the angle between the scourge and the target
-      const dx = rect.left - div.offsetLeft;
-      const dy = rect.top - div.offsetTop;
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        // Calculate the angle between the scourge and the target
+        const dx = targetCenterX - (div.offsetLeft + div.offsetWidth / 2); // Calculate the horizontal distance between the centers
+        const dy = targetCenterY - (div.offsetTop + div.offsetHeight / 2); // Calculate the vertical distance between the centers
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
   
-      // Set the rotation angle of the scourge image
-      div.style.transform = `rotate(${angle}deg)`;
+        // Set the rotation angle of the scourge image
+        div.style.transform = `rotate(${angle}deg)`;
   
-      // Move the scourge towards the target
-      let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
-      let transitionString = `all ${speed}s ease-in-out`;
-      div.style.transition = transitionString;
-      div.style.top = rect.top + "px";
-      div.style.left = rect.left + "px";
+        // Move the scourge towards the target
+        let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
+        let transitionString = `all ${speed}s ease-in-out`;
+        div.style.transition = transitionString;
+        div.style.top = targetCenterY + "px";
+        div.style.left = targetCenterX + "px";
     });
 }
 
@@ -228,5 +392,6 @@ document.addEventListener('mutationObserver', function(event) {
 function startGame() {
     createScourge(); // Call the function to spawn scourge when the game begins
     moveScourge(); // Start moving the scourge towards the battlecruiser
+    checkWin();
     }
 startGame()
