@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (yamatoCannonReady) {
             // Play charging sound effect
             playChargingSound();
-            const yamatoCharge =
+            const yamatoCharge = 
                 // Set yamatoCannonReady to false to prevent firing again immediately
                 yamatoCannonReady = false;
 
@@ -257,26 +257,31 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(() => {
                 // Play firing sound effect
                 playFiringSound();
-
+                    // new audio(src='assets/yamatofire.wav')
                 // Display visual effect (giant beam laser)
                 displayBeamLaser();
 
                 // Clear all scourge elements from the screen
-                clearScourge();
-                function clearScourge() {
+                clearEnemies();
+                function clearEnemies() {
                     const scourgeList = document.querySelectorAll('.scourge');
+                    const mutaliskList = document.querySelectorAll('.mutalisk');
                     scourgeList.forEach(scourge => {
                         scourge.remove();
+
+                        mutaliskList.forEach(mutalisk => {
+                            mutalisk.remove();
                     });
-                }
+                })
                 // Set yamatoCannonReady to true after recharge time
                 yamatoCannonReady = true;
 
                 // Play sound effect for cannon recharged
                 playRechargedSound();
-            }, 12000); // 12 seconds in milliseconds
+            }}, 12000); // 12 seconds in milliseconds
         }
     }
+    
 
     // Function to check for collision with scourge
     function checkForCollision(laser) {
@@ -509,76 +514,67 @@ function moveMutalisk() {
 // Initial call to start moving mutalisks
 moveMutalisk();
 
-function fireGlave(div, targetX, targetY) {
-    if (!isActive) return;
-    // Create the glave projectile
-    const glave = document.createElement('img');
-    glave.className = 'glave';
-    glave.src = 'assets/glave.png'; // Image for the glave
-    glave.style.position = 'absolute';
-    glave.style.width = '30px'; // Adjust size as needed
-    glave.style.height = '30px'; // Adjust size as needed
 
-    // Calculate the initial position of the glave (same as mutalisk's position)
-    const mutaliskRect = div.getBoundingClientRect();
-    glave.style.left = mutaliskRect.left + 'px';
-    glave.style.top = mutaliskRect.top + 'px';
-
-    // Append the glave to the game area
-    document.getElementById('gameArea').appendChild(glave);
-
-    // Calculate the angle between the mutalisk and the target
-    const dx = targetX - mutaliskRect.left; // Calculate the horizontal distance to the target
-    const dy = targetY - mutaliskRect.top; // Calculate the vertical distance to the target
-    const angle = Math.atan2(dy, dx); // Calculate the angle in radians
-
-    // Set the speed and direction of the glave
-    const speed = 5; // Adjust speed as needed
-    const vx = Math.cos(angle) * speed; // Calculate the horizontal velocity
-    const vy = Math.sin(angle) * speed; // Calculate the vertical velocity
-
-    // Function to move the glave
-    function moveGlave() {
-        // Update the position of the glave
-        let x = parseFloat(glave.style.left);
-        let y = parseFloat(glave.style.top);
-        x += vx; // Update horizontal position
-        y += vy; // Update vertical position
-        glave.style.left = x + 'px';
-        glave.style.top = y + 'px';
-
-        // Check if the glave hits the target (battlecruiser hit box)
-        const target = document.getElementById('battleCruiserHitBox');
-        if (!target) {
-            console.error("Target element 'battleCruiserHitBox' not found");
+    function fireGlave(div, targetX, targetY) {
+        if (!div) {
+            console.error("Mutalisk element not found");
             return;
         }
-
-        const targetRect = target.getBoundingClientRect();
-        if (
-            x >= targetRect.left &&
-            x <= targetRect.right &&
-            y >= targetRect.top &&
-            y >= targetRect.bottom
-        ) {
-            // Glave hits the target, remove the glave and deal damage to the battlecruiser
-            glave.remove();
-            dealDamageToBattleCruiser(20); // Adjust damage as needed
-        } else {
-            // Glave missed the target, continue moving
-            requestAnimationFrame(moveGlave);
+    
+        const glave = document.createElement('img');
+        glave.className = 'glave';
+        glave.src = 'assets/glave.png';
+        glave.style.position = 'absolute';
+        glave.style.width = '30px';
+        glave.style.height = '30px';
+    
+        const mutaliskRect = div.getBoundingClientRect();
+        const mutaliskCenterX = mutaliskRect.left + mutaliskRect.width / 2;
+        const mutaliskCenterY = mutaliskRect.top + mutaliskRect.height / 2;
+    
+        glave.style.left = mutaliskCenterX + 'px'; // Spawn glave at mutalisk's center X position
+        glave.style.top = mutaliskCenterY + 'px'; // Spawn glave at mutalisk's center Y position
+    
+        document.getElementById('gameArea').appendChild(glave);
+    
+        const dx = targetX - mutaliskCenterX;
+        const dy = targetY - mutaliskCenterY;
+        const angle = Math.atan2(dy, dx);
+    
+        const speed = 5;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+    
+        function moveGlave() {
+            let x = parseFloat(glave.style.left);
+            let y = parseFloat(glave.style.top);
+            x += vx;
+            y += vy;
+            glave.style.left = x + 'px';
+            glave.style.top = y + 'px';
+    
+            const target = document.getElementById('battleCruiserHitBox');
+            if (!target) {
+                console.error("Target element 'battleCruiserHitBox' not found");
+                return;
+            }
+    
+            const targetRect = target.getBoundingClientRect();
+            if (
+                x >= targetRect.left &&
+                x <= targetRect.right &&
+                y >= targetRect.top &&
+                y <= targetRect.bottom
+            ) {
+                glave.remove();
+                dealDamageToBattleCruiser(20);
+            } else {
+                requestAnimationFrame(moveGlave);
+            }
         }
+    
+        moveGlave();
     }
-
-    // Start moving the glave
-    moveGlave();
-}
-
-function dealDamageToBattleCruiser(damage) {
-    // Implement your damage logic here
-    console.log(`Dealt ${damage} damage to the battlecruiser.`);
-}
-
 function createMutalisk() {
     const mutalisk = document.createElement('img');
     mutalisk.className = 'mutalisk';
@@ -682,5 +678,4 @@ function startGame() {
     setInterval(createAsteroid, spawnInterval); // Spawn asteroids at regular intervals
     moveScourge(); // Start moving the scourge towards the battlecruiser
     createMutalisk(); // Spawn mutalisks when the game begins
-    fireGlave();
 }

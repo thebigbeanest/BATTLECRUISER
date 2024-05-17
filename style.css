@@ -10,14 +10,16 @@
 
 
 
-
+#healthDisplay {
+    color: white;
+}
 
 .mutalisk {
     position: absolute;
 }
 
 .glave {
-
+    position: absolute;
 }
 #battleCruiserHitBox {
     color: white;
