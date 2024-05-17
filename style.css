@@ -63,8 +63,9 @@ body {
     transform-origin: top; /* Change the rotation origin to the top */
 }
 .asteroid {
-    display: flex;
-    margin-left: 1000px;
+    position: absolute; /* Ensure asteroids are absolutely positioned */
+    margin-left: 0; /* Reset the margin-left */
+    margin-top: 0; /* Reset the margin-top */
 }
  @media screen {
     

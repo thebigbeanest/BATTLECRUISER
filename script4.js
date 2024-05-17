@@ -2,52 +2,52 @@ let speedMin = 12;
 let speedMax = 12;
 
 
-function destroy() {
-  const div = document.querySelectorAll('.scourge');
-  console.log("clicked");
-  div.style.display = 'none';
-}
+// function destroy() {
+//   const div = document.querySelectorAll('.scourge');
+//   console.log("clicked");
+//   div.style.display = 'none';
+// }
 
-function moveScourge() {
-    const divs = document.querySelectorAll('.scourge');
-    const target = document.getElementById('battleCruiserHitBox');
-    const rect = target.getBoundingClientRect();
+// function moveScourge() {
+//     const divs = document.querySelectorAll('.scourge');
+//     const target = document.getElementById('battleCruiserHitBox');
+//     const rect = target.getBoundingClientRect();
   
-    divs.forEach(div => {
-      // Calculate the angle between the scourge and the target
-      const dx = rect.left - div.offsetLeft;
-      const dy = rect.top - div.offsetTop;
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+//     divs.forEach(div => {
+//       // Calculate the angle between the scourge and the target
+//       const dx = rect.left - div.offsetLeft;
+//       const dy = rect.top - div.offsetTop;
+//       const angle = Math.atan2(dy, dx) * (180 / Math.PI);
   
-      // Set the rotation angle of the scourge image
-      div.style.transform = `rotate(${angle}deg)`;
+//       // Set the rotation angle of the scourge image
+//       div.style.transform = `rotate(${angle}deg)`;
   
-      // Move the scourge towards the target
-      let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
-      let transitionString = `all ${speed}s ease-in-out`;
-      div.style.transition = transitionString;
-      div.style.top = rect.top + height + "px";
-      div.style.left = rect.left + width + "px";
-    });
-}
+//       // Move the scourge towards the target
+//       let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
+//       let transitionString = `all ${speed}s ease-in-out`;
+//       div.style.transition = transitionString;
+//       div.style.top = rect.top + height + "px";
+//       div.style.left = rect.left + width + "px";
+//     });
+// }
 
-function createScourge() {
-    const scourge = document.createElement('img');
-    scourge.className = 'scourge';
-    scourge.src = 'assets/SCOURGE.png';
-    scourge.alt = 'Scourge Image';
+// function createScourge() {
+//     const scourge = document.createElement('img');
+//     scourge.className = 'scourge';
+//     scourge.src = 'assets/SCOURGE.png';
+//     scourge.alt = 'Scourge Image';
     
-    // Randomly position the scourge at the top of the screen
-    const gameAreaWidth = 3000; // Width of the game area
-    const randomX = Math.random() * (gameAreaWidth - 20);
-    scourge.style.position = 'absolute';
-    scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
-    scourge.style.left = `${randomX}px`;
-    document.getElementById('gameArea').appendChild(scourge);
+//     // Randomly position the scourge at the top of the screen
+//     const gameAreaWidth = 3000; // Width of the game area
+//     const randomX = Math.random() * (gameAreaWidth - 20);
+//     scourge.style.position = 'absolute';
+//     scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
+//     scourge.style.left = `${randomX}px`;
+//     document.getElementById('gameArea').appendChild(scourge);
 
-    // Move the newly spawned scourge
-    moveScourge();
-}
+//     // Move the newly spawned scourge
+//     moveScourge();
+// }
 
 
 
@@ -71,11 +71,51 @@ function checkWin() {
         document.body.appendChild(winScreen);
     }
 }
-
-// Function to create new scourge after delay
-function spawnNewScourge() {
-    createScourge();
+function checkForScourgeHit() {
+    const battleCruiserHitBox = document.getElementById('battleCruiserHitBox');
+    const battleCruiserHitBoxRect = battleCruiserHitBox.getBoundingClientRect();
+    const scourgeList = document.querySelectorAll('.scourge');
+    
+    scourgeList.forEach(scourge => {
+        const scourgeRect = scourge.getBoundingClientRect();
+        if (
+            scourgeRect.left < battleCruiserHitBoxRect.right &&
+            scourgeRect.right > battleCruiserHitBoxRect.left &&
+            scourgeRect.top < battleCruiserHitBoxRect.bottom &&
+            scourgeRect.bottom > battleCruiserHitBoxRect.top
+        ) {
+            // Collision detected
+            playCollisionSound();
+            dealDamageToBattleCruiser(10);
+            scourge.remove();
+            spawnNewScourge();
+        }
+    });
 }
+
+function dealDamageToBattleCruiser(damage) {
+    const battleCruiser = document.getElementById('battleCruiser');
+    const healthDisplay = document.getElementById('healthDisplay');
+    let currentHealth = parseInt(healthDisplay.innerText);
+    currentHealth -= damage;
+    healthDisplay.innerText = currentHealth;
+
+    // Check if the battlecruiser's health drops to or below 0
+    if (currentHealth <= 0) {
+        // Game over logic here
+    }
+}
+
+// Function to play the collision sound
+function playScourgeHitSound() {
+    const collisionSound = new Audio('assets/damageNoise.wav');
+    collisionSound.play();
+}
+
+// // Function to create new scourge after delay
+// function spawnNewScourge() {
+//     createScourge();
+// }
 
 // Check for scourge destruction and spawn new ones
 document.addEventListener('DOMNodeRemoved', function(event) {
@@ -86,6 +126,8 @@ document.addEventListener('DOMNodeRemoved', function(event) {
 document.addEventListener('DOMContentLoaded', function() {
     const gameArea = document.getElementById('gameArea');
     const gameAreaRect = gameArea.getBoundingClientRect();
+    console.log('Game Area Rect:', gameAreaRect);
+
     const asteroidWidth = 100; // Width of the asteroid images
     const asteroidHeight = 100; // Height of the asteroid images
     const spawnInterval = 1000; // Interval between spawning asteroids (in milliseconds)
@@ -106,11 +148,12 @@ document.addEventListener('DOMContentLoaded', function() {
         asteroid.style.width = asteroidWidth + 'px';
         asteroid.style.height = asteroidHeight + 'px';
         
-        // Randomly position the asteroid horizontally within the right half of the game area
-        asteroid.style.left = Math.random() * (gameAreaRect.width / 2) + (gameAreaRect.width / 2) + 'px';
+        // Randomly position the asteroid horizontally within the entire game area
+        asteroid.style.left = Math.random() * (gameAreaRect.width - asteroidWidth) + 'px';
+        asteroid.style.top = '-' + asteroidHeight + 'px'; // Set initial top position above the game area
         
-        // Start above the game area
-        asteroid.style.top = '-' + (asteroidHeight * 2) + 'px'; // Set initial top position higher above the game area
+        console.log('Initial Left:', asteroid.style.left);
+        console.log('Initial Top:', asteroid.style.top);
         
         gameArea.appendChild(asteroid);
 
@@ -118,6 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const moveInterval = setInterval(() => {
             const asteroidRect = asteroid.getBoundingClientRect();
             const asteroidBottom = asteroidRect.top + asteroidRect.height; // Calculate bottom position based on the bounding rectangle
+            
+            console.log('Asteroid Bottom:', asteroidBottom);
+            
             if (asteroidBottom < gameAreaRect.bottom) {
                 asteroid.style.top = (parseFloat(asteroid.style.top) + moveSpeed) + 'px';
             } else {
