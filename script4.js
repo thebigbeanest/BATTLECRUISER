@@ -7,37 +7,6 @@ let scoreDisplay = document.getElementById('scoreDisplay');
 
 
 
-function playVideoOnGameOver() {
-    // Create a video element
-    const video = document.createElement('video');
-    video.src = 'assets/loseCutscene.mp4'; // Set the source of your video
-    video.autoplay = true; // Autoplay the video
-    video.loop = true; // Loop the video
-    video.style.position = 'fixed';
-    video.style.top = '0';
-    video.style.left = '0';
-    video.style.width = '100%';
-    video.style.height = '100%';
-    video.style.objectFit = 'cover'; // Cover the entire screen
-    document.body.appendChild(video);
-
-    // Create a div to darken the background
-    const overlay = document.createElement('div');
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent black overlay
-    document.body.appendChild(overlay);
-}
-
-
-
-
-
-
-
 
 const winScreen = document.createElement('div');
             winScreen.textContent = 'You Win!';
@@ -57,11 +26,11 @@ const winScreen = document.createElement('div');
             document.onmouseup = () => document.removeEventListener("mousemove", handler);
             document.onselectstart = () => document.removeEventListener("mousemove", handler);
 
-function clearScourge(){
+function clearEnemies(){
     scoreDisplay.innerText=0;    
-    const scourgeList = document.querySelectorAll('.scourge');
-    scourgeList.forEach(scourge => {
-        scourge.remove();
+    const enemyList = document.querySelectorAll('.scourge', '.mutalisk');
+    enemyList.forEach(enemy => {
+        enemy.remove();
         
     });
 }
@@ -87,6 +56,46 @@ function checkForScourgeHit() {
     });
 }
 
+
+function playVideoOnGameOver() {
+    // Create a video element
+    const video = document.createElement('video');
+    video.src = 'assets/loseCutscene.mp4'; // Set the source of your video
+    video.autoplay = true; // Autoplay the video
+    video.loop = true; // Loop the video
+    video.style.position = 'fixed';
+    video.style.top = '0';
+    video.style.left = '0';
+    video.style.width = '100%';
+    video.style.height = '100%';
+    video.style.objectFit = 'cover'; // Cover the entire screen
+    document.body.appendChild(video);
+
+    // Create a div to darken the background
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent black overlay
+    document.body.appendChild(overlay);
+    clearEnemies();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function dealDamageToBattleCruiser(damage) {
     const battleCruiser = document.getElementById('battleCruiser');
     const healthDisplay = document.getElementById('healthDisplay');
@@ -95,11 +104,10 @@ function dealDamageToBattleCruiser(damage) {
     healthDisplay.innerText = currentHealth;
 
     // Check if the battlecruiser's health drops to or below 0
-    if (currentHealth <= 0) {
-        // openLoseModal();
+    if (currentHealth <= 0 && isActive) {
+        isActive = false;
         playVideoOnGameOver();
-        isActive=false;
-        clearScourge();
+        clearEnemies();
     }
 }
 
@@ -245,60 +253,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    function yamatoCannon() {
-        if (yamatoCannonReady) {
-            // Play charging sound effect
-            playChargingSound();
-            const yamatoCharge = 
-                // Set yamatoCannonReady to false to prevent firing again immediately
-                yamatoCannonReady = false;
+    // function yamatoCannon() {
+    //     if (yamatoCannonReady) {
+    //         // Play charging sound effect
+    //         playChargingSound();
+    //         const yamatoCharge = 
+    //             // Set yamatoCannonReady to false to prevent firing again immediately
+    //             yamatoCannonReady = false;
 
-            // Wait for 12 seconds (recharge time)
-            setTimeout(() => {
-                // Play firing sound effect
-                playFiringSound();
-                    // new audio(src='assets/yamatofire.wav')
-                // Display visual effect (giant beam laser)
-                displayBeamLaser();
+    //         // Wait for 12 seconds (recharge time)
+    //         setTimeout(() => {
+    //             // Play firing sound effect
+    //             playFiringSound();
+    //                 // new audio(src='assets/yamatofire.wav')
+    //             // Display visual effect (giant beam laser)
+    //             displayBeamLaser();
 
-                // Clear all scourge elements from the screen
-                clearEnemies();
-                function clearEnemies() {
-                    const scourgeList = document.querySelectorAll('.scourge');
-                    const mutaliskList = document.querySelectorAll('.mutalisk');
-                    scourgeList.forEach(scourge => {
-                        scourge.remove();
+    //             // Clear all scourge elements from the screen
+    //             clearEnemies();
+    //             function clearEnemies() {
+    //                 const scourgeList = document.querySelectorAll('.scourge');
+    //                 const mutaliskList = document.querySelectorAll('.mutalisk');
+    //                 scourgeList.forEach(scourge => {
+    //                     scourge.remove();
 
-                        mutaliskList.forEach(mutalisk => {
-                            mutalisk.remove();
-                    });
-                })
-                // Set yamatoCannonReady to true after recharge time
-                yamatoCannonReady = true;
+    //                     mutaliskList.forEach(mutalisk => {
+    //                         mutalisk.remove();
+    //                 });
+    //             })
+    //             // Set yamatoCannonReady to true after recharge time
+    //             yamatoCannonReady = true;
 
-                // Play sound effect for cannon recharged
-                playRechargedSound();
-            }}, 12000); // 12 seconds in milliseconds
-        }
-    }
+    //             // Play sound effect for cannon recharged
+    //             playRechargedSound();
+    //         }}, 12000); // 12 seconds in milliseconds
+    //     }
+    // }
     
 
-    // Function to check for collision with scourge
+    // Function to check for collision with enemies
     function checkForCollision(laser) {
-        const scourgeList = document.querySelectorAll('.scourge');
+        const enemyList = document.querySelectorAll('.scourge, .mutalisk');
         const laserRect = laser.getBoundingClientRect();
-
-        for (let i = 0; i < scourgeList.length; i++) {
-            const scourge = scourgeList[i];
-            const scourgeRect = scourge.getBoundingClientRect();
+        
+        for (let i = 0; i < enemyList.length; i++) {
+            const enemy = enemyList[i];
+            const enemyRect = enemy.getBoundingClientRect();
             if (
-                laserRect.left < scourgeRect.right &&
-                laserRect.right > scourgeRect.left &&
-                laserRect.top < scourgeRect.bottom &&
-                laserRect.bottom > scourgeRect.top
+                laserRect.left < enemyRect.right &&
+                laserRect.right > enemyRect.left &&
+                laserRect.top < enemyRect.bottom &&
+                laserRect.bottom > enemyRect.top
             ) {
-                // Collision detected, remove the scourge
-                scourge.remove();
+                // Collision detected, remove the enemy
+                enemy.remove();
 
                 // Play a random sound effect
                 playRandomScourgeDestroyedSound();
@@ -311,6 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
+
     // Function to add points to the score
     function addToScore(points) {
         const scoreDisplay = document.getElementById('scoreDisplay');
@@ -323,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             document.body.appendChild(winScreen);
             isActive=false;
-            clearScourge();    
+            clearEnemies();    
     }
 }
 
@@ -511,10 +520,6 @@ function moveMutalisk() {
     requestAnimationFrame(moveMutalisk);
 }
 
-// Initial call to start moving mutalisks
-moveMutalisk();
-
-
     function fireGlave(div, targetX, targetY) {
         if (!div) {
             console.error("Mutalisk element not found");
@@ -546,8 +551,8 @@ moveMutalisk();
         const vy = Math.sin(angle) * speed;
     
         function moveGlave() {
-            let x = parseFloat(glave.style.left);
-            let y = parseFloat(glave.style.top);
+            let x = parseInt(glave.style.left);
+            let y = parseInt(glave.style.top);
             x += vx;
             y += vy;
             glave.style.left = x + 'px';
@@ -589,10 +594,8 @@ function createMutalisk() {
     mutalisk.style.left = `${randomX}px`;
     document.getElementById('gameArea').appendChild(mutalisk);
 
-    // Move the newly spawned mutalisk
-    moveMutalisk();
 }
-
+moveMutalisk();
 // Function to create new mutalisk after delay
 function spawnNewMutalisk() {
     if (isActive) {
@@ -601,53 +604,12 @@ function spawnNewMutalisk() {
 }
 
 // Check for mutalisk destruction and spawn new ones
-document.addEventListener('mutationObserver', function (event) {
+document.addEventListener('DOMNodeRemoved', function (event) {
     if (event.target && event.target.classList.contains('mutalisk')) {
         spawnNewMutalisk();
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Get the modal
-let loseModal = document.getElementById("loseModal");
-
-// Get the <span> element that closes the modal
-let closeButton = document.getElementById("loseClose");
-
-// When the user clicks on the button, open the modal
-let openLoseModal = function () {
-    loseModal.style.display = "block";
-}
-
-closeButton.onclick = function () {
-    loseModal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target == loseModal) {
-        loseModal.style.display = "none";
-    }
-}
 
 
 const startButton = document.getElementById('start');
@@ -665,11 +627,10 @@ function startGame() {
     if (document.body.contains(winScreen)) {
         document.body.removeChild(winScreen);
     }
-    clearScourge();
+    clearEnemies();
     isActive = true;
     //Initial spawning of scourge
     const numberOfScourge = 10; // Number of initial scourge to spawn
-    const numberOfMutalisk = 2;
     for (let i = 0; i < numberOfScourge; i++) {
         spawnNewScourge();
     }
