@@ -118,7 +118,6 @@ document.addEventListener('DOMNodeRemoved', function (event) {
 														  
 const gameArea = document.getElementById('gameArea');
 const gameAreaRect = gameArea.getBoundingClientRect();
-console.log('Game Area Rect:', gameAreaRect);
 														  
 
 const asteroidWidth = 100; // Width of the asteroid images
@@ -467,6 +466,11 @@ function moveMutalisk() {
     const targetCenterY = targetRect.top + targetRect.height / 2; // Calculate the y-coordinate of the center of the target
 
     divs.forEach(div => {
+        // Initialize the lastFireTime property if it doesn't exist
+        if (!div.lastFireTime) {
+            div.lastFireTime = 0;
+        }
+
         // Calculate the distance between the mutalisk and the center of the target
         const mutaliskRect = div.getBoundingClientRect();
         const mutaliskCenterX = mutaliskRect.left + mutaliskRect.width / 2;
@@ -475,12 +479,7 @@ function moveMutalisk() {
         const dy = targetCenterY - mutaliskCenterY; // Calculate the vertical distance between the mutalisk and the target center
         const distanceToTarget = Math.sqrt(dx * dx + dy * dy); // Calculate the distance to the target center
 
-        console.log("MutaliskRect:", mutaliskRect);
-        console.log("Mutalisk Center X:", mutaliskCenterX);
-        console.log("Mutalisk Center Y:", mutaliskCenterY);
-        console.log("Distance to target:", distanceToTarget);
-
-        if (distanceToTarget > 500) { // Check if the mutalisk is more than 100 pixels away from the target center
+        if (distanceToTarget > 500) { // Check if the mutalisk is more than 500 pixels away from the target center
             // Move the mutalisk towards the target
             const speed = 1; // Adjust the speed as needed
 
@@ -493,8 +492,13 @@ function moveMutalisk() {
             div.style.left = `${mutaliskRect.left + moveX}px`;
             div.style.top = `${mutaliskRect.top + moveY}px`;
         } else {
-            // Mutalisk is within 100 pixels of the target center, stop the mutalisk
-            console.log("Mutalisk stopped");
+            const currentTime = Date.now();
+            const cooldown = 2000; // 2 seconds cooldown
+
+            if (currentTime - div.lastFireTime >= cooldown) {
+                fireGlave(div, targetCenterX, targetCenterY); // Fire glave at the target
+                div.lastFireTime = currentTime; // Update the last fire time
+            }
         }
     });
 
@@ -505,7 +509,8 @@ function moveMutalisk() {
 // Initial call to start moving mutalisks
 moveMutalisk();
 
-function fireGlave(mutalisk, targetX, targetY) {
+function fireGlave(div, targetX, targetY) {
+    if (!isActive) return;
     // Create the glave projectile
     const glave = document.createElement('img');
     glave.className = 'glave';
@@ -515,7 +520,7 @@ function fireGlave(mutalisk, targetX, targetY) {
     glave.style.height = '30px'; // Adjust size as needed
 
     // Calculate the initial position of the glave (same as mutalisk's position)
-    const mutaliskRect = mutalisk.getBoundingClientRect();
+    const mutaliskRect = div.getBoundingClientRect();
     glave.style.left = mutaliskRect.left + 'px';
     glave.style.top = mutaliskRect.top + 'px';
 
@@ -543,12 +548,18 @@ function fireGlave(mutalisk, targetX, targetY) {
         glave.style.top = y + 'px';
 
         // Check if the glave hits the target (battlecruiser hit box)
-        const targetRect = document.getElementById('battleCruiserHitBox').getBoundingClientRect();
+        const target = document.getElementById('battleCruiserHitBox');
+        if (!target) {
+            console.error("Target element 'battleCruiserHitBox' not found");
+            return;
+        }
+
+        const targetRect = target.getBoundingClientRect();
         if (
             x >= targetRect.left &&
             x <= targetRect.right &&
             y >= targetRect.top &&
-            y <= targetRect.bottom
+            y >= targetRect.bottom
         ) {
             // Glave hits the target, remove the glave and deal damage to the battlecruiser
             glave.remove();
@@ -561,6 +572,11 @@ function fireGlave(mutalisk, targetX, targetY) {
 
     // Start moving the glave
     moveGlave();
+}
+
+function dealDamageToBattleCruiser(damage) {
+    // Implement your damage logic here
+    console.log(`Dealt ${damage} damage to the battlecruiser.`);
 }
 
 function createMutalisk() {
@@ -666,4 +682,5 @@ function startGame() {
     setInterval(createAsteroid, spawnInterval); // Spawn asteroids at regular intervals
     moveScourge(); // Start moving the scourge towards the battlecruiser
     createMutalisk(); // Spawn mutalisks when the game begins
+    fireGlave();
 }
