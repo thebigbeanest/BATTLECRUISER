@@ -37,6 +37,9 @@ body {
     display: flex;
     margin-left: 450px;
 }
+#healthDisplay {
+    color: white;
+}
 .scourge {
     height: auto;
     width: 60px;

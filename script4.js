@@ -359,6 +359,33 @@ function reset() {
   console.log(div.style.top);
 }
 
+// Function to check for collision with scourge
+function checkForScourgeImpact() {
+    const scourgeList = document.querySelectorAll('.scourge');
+    const bcRect = battleCruiserHitBox.getBoundingClientRect();
+    
+    for (let i = 0; i < scourgeList.length; i++) {
+        const scourge = scourgeList[i];
+        const scourgeRect = scourge.getBoundingClientRect();
+        if (
+            bcRect.left < scourgeRect.right &&
+            bcRect.right > scourgeRect.left &&
+            bcRect.top < scourgeRect.bottom &&
+            bcRect.bottom > scourgeRect.top
+        ) {
+            // Collision detected, remove the scourge
+            scourge.remove();
+            
+            // Play a random sound effect
+            playScourgeHitSound();
+            
+            // Add 10 points to the score
+            dealDamageToBattleCruiser(10);
+        }
+    }
+    return false;
+}
+
 function moveScourge() {
     const divs = document.querySelectorAll('.scourge');
     const target = document.getElementById('battleCruiserHitBox');
@@ -381,6 +408,8 @@ function moveScourge() {
         div.style.transition = transitionString;
         div.style.top = targetCenterY + "px";
         div.style.left = targetCenterX + "px";
+
+        setInterval(checkForScourgeImpact,500);
     });
 }
 
