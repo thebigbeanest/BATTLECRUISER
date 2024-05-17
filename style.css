@@ -1,19 +1,35 @@
 /* Need to make more than one Battlecruiser hitbox to conform to the shape better, so there are no gaps.*/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #battleCruiserHitBox {
     color: white;
-    border: solid red;
     display: center;
     margin-top: 500px;
     margin-left: 1050px;
     margin-right: 980px;
     height: 550px;
     width: auto;
+    user-select: none;
 }
 #battleCruiserImage {
     height: auto;
     width: 475px;
     margin-left: 18px;
+    user-select: none;
 }
 #battleCruiserImageContainer {
     height: null;
@@ -25,22 +41,25 @@ body {
     color: white;
     display: flex;
     margin-left: 450px;
+    user-select: none;
 }
 #scoreValue {
     color: white;
     display: flex;
     margin-left: 450px;
+    user-select: none;
 }
 .menuButton {
     color: lightblue;
     border: solid darkcyan;
     background-color: black;
+    user-select: none;
 }
 .scourge {
-    border: solid red;  
     height: auto;
     width: 60px;
     margin-left: 0px;
+    user-select: none;
 }
 #scourgeSpawnArea {
     color: white;
@@ -50,6 +69,7 @@ body {
     top: 60%; 
     left: 80%; 
     transform: translate(-50%, -50%); 
+    user-select: none;
 }
 .laser {
     position: absolute;
@@ -59,11 +79,13 @@ body {
     border-right: 2px solid transparent;
     border-top: 100px solid white; /* Change to top border */
     transform-origin: top; /* Change the rotation origin to the top */
+    user-select: none;
 }
 .asteroid {
     position: absolute; /* Ensure asteroids are absolutely positioned */
     margin-left: 0; /* Reset the margin-left */
     margin-top: 0; /* Reset the margin-top */
+    user-select: none;
 }
 
 /* The Modal (background) */
