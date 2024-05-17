@@ -21,46 +21,41 @@
     <audio id="scourgeDestroyedSound3" src="assets/scourgeDeath.wav"></audio>
     <audio id="scourgeNoise"></audio>
     <audio id="music1" src="assets/Music1.mp3"></audio>
-    <audio id="scourgeHit" src="assets/damageNoise.wav"></audio>
     <div id= bodyElement>
+
+      <button class="menuButton" id="start">Start Game</button>
+      <button class="menuButton" id="musicButton">Music</button>
+      <button class="menuButton">Options</button> 
+
         <div id="gameArea">
         <div id= scoreDisplay>0</div>
-        <div id="healthDisplay">100</div>
-            <button id="musicButton">Music</button>
-                <button id="optionsMenuButton">Options</button>
+            
+            
                     <div id="scourgeSpawnArea"></div>
                         <div class="scourge" id="scourge1"></div>
                         <div class="scourge" id="scourge2"></div>
                         <div class="scourge" id="scourge3"></div>
-                        <div class="scourge" id="scourge4"></div>
-
-
-
-
-
-
-
-
-
-        <div id="battleCruiserHitBox">
+                        <div class="scourge" id="scourge4"></div>      
+          <div id="battleCruiserHitBox">
             <div id="battleCruiserImageContainer">
                 <img id="battleCruiserImage" src="assets/BATTLECRUISER.png" alt="Battlecruiser Image">
             </div>
         </div>
-        
-
-
-
-
-
-
-
-
-
-
-
-            <img class ="planet" id="tarsonis" src="assets/TARSONIS.png">
+          <img class ="planet" id="tarsonis" src="assets/TARSONIS.png">
         </div>  
     </div>
+  <div id="healthDisplay">100</div>
+
+<!-- The Modal -->
+<div id="loseModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>You lost, dang</p>
+    <button id="loseClose">Womp womp</button>
+  </div>
+
+</div>
 </body>
 </html>

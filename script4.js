@@ -398,16 +398,43 @@ document.addEventListener('mutationObserver', function(event) {
         music.loop = false; // loop the music
         music.play();
     })
-  const playButton = document.getElementById('musicButton');
-    playButton.addEventListener('click', function() {
-        // Play music1
-        const music = new Audio('assets/Music1.mp3');
-        music.loop = true; // loop the music
-        music.play();
-    })
+// Get the modal
+let loseModal = document.getElementById("loseModal");
+
+// Get the <span> element that closes the modal
+let closeButton = document.getElementById("loseClose");
+
+// When the user clicks on the button, open the modal
+let openLoseModal = function () {
+    loseModal.style.display = "block";
+}
+
+closeButton.onclick = function () {
+    loseModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == loseModal) {
+        loseModal.style.display = "none";
+    }
+}
+
+
+const startButton = document.getElementById('start');
+startButton.onclick=function(event){
+    startGame();
+}
+
+const playButton = document.getElementById('musicButton');
+playButton.addEventListener('click', function () {
+    // Play music1
+    const music = new Audio('assets/Music1.mp3');
+    music.loop = true; // loop the music
+    music.play();
+})
 function startGame() {
     createScourge(); // Call the function to spawn scourge when the game begins
+    createAsteroid();
     moveScourge(); // Start moving the scourge towards the battlecruiser
-    checkWin();
-    }
-startGame()
+}
