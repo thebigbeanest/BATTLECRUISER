@@ -126,7 +126,6 @@ document.addEventListener('DOMNodeRemoved', function(event) {
 document.addEventListener('DOMContentLoaded', function() {
     const gameArea = document.getElementById('gameArea');
     const gameAreaRect = gameArea.getBoundingClientRect();
-    console.log('Game Area Rect:', gameAreaRect);
 
     const asteroidWidth = 100; // Width of the asteroid images
     const asteroidHeight = 100; // Height of the asteroid images
@@ -152,17 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
         asteroid.style.left = Math.random() * (gameAreaRect.width - asteroidWidth) + 'px';
         asteroid.style.top = '-' + asteroidHeight + 'px'; // Set initial top position above the game area
         
-        console.log('Initial Left:', asteroid.style.left);
-        console.log('Initial Top:', asteroid.style.top);
-        
         gameArea.appendChild(asteroid);
 
         // Move the asteroid downwards
         const moveInterval = setInterval(() => {
             const asteroidRect = asteroid.getBoundingClientRect();
             const asteroidBottom = asteroidRect.top + asteroidRect.height; // Calculate bottom position based on the bounding rectangle
-            
-            console.log('Asteroid Bottom:', asteroidBottom);
+        
             
             if (asteroidBottom < gameAreaRect.bottom) {
                 asteroid.style.top = (parseFloat(asteroid.style.top) + moveSpeed) + 'px';
@@ -188,8 +183,9 @@ for (let i = 0; i < numberOfScourge; i++) {
 
     // Function to shoot laser towards mouse position
     function shootLaser(event) {
-        const startX = gameArea.offsetWidth / 2;
-        const startY = gameArea.offsetHeight / 2;
+        const battleCruiserHitBox = document.getElementById('battleCruiserHitBox');
+        const startX = battleCruiserHitBox.offsetLeft + battleCruiserHitBox.offsetWidth / 2;
+        const startY = battleCruiserHitBox.offsetTop + battleCruiserHitBox.offsetHeight / 2;
         const endX = event.clientX - gameArea.getBoundingClientRect().left;
         const endY = event.clientY - gameArea.getBoundingClientRect().top;
 
@@ -337,13 +333,13 @@ function addToScore(points) {
     scoreDisplay.innerText = currentScore;
 }
 
-// Function to play the sound effect when a scourge is destroyed
-function playScourgeDestroyedSound() {
-    // Get the audio element
-    const soundEffect = document.getElementById('scourgeDestroyedSound');
-    // Play the sound effect
-    soundEffect.play();
-}
+// // Function to play the sound effect when a scourge is destroyed
+// function playScourgeDestroyedSound() {
+//     // Get the audio element
+//     const soundEffect = document.getElementById('scourgeDestroyedSound');
+//     // Play the sound effect
+//     soundEffect.play();
+// }
 
     // Event listener for mouse click to shoot laser
     gameArea.addEventListener('click', shootLaser);

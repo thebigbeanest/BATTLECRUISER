@@ -1,6 +1,4 @@
 
-/* Need to make more than one Battlecruiser hitbox to conform to the shape better, so there are no gaps.*/
-
 #battleCruiserHitBox {
     color: white;
     border: solid black;
@@ -67,6 +65,20 @@ body {
     margin-left: 0; /* Reset the margin-left */
     margin-top: 0; /* Reset the margin-top */
 }
- @media screen {
-    
- }
+#battleCruiserHitBox {
+    margin-top: 500px;
+    margin-left: 1050px;
+}
+
+#scoreDisplay {
+    margin-left: 450px;
+}
+
+#optionsMenuButton {
+    margin-left: 450px;
+}
+
+.scourge {
+    margin-left: 0px;
+}
+
