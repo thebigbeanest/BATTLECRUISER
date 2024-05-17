@@ -73,11 +73,6 @@ function playScourgeHitSound() {
     collisionSound.play();
 }
 
-// // Function to create new scourge after delay
-// function spawnNewScourge() {
-//     createScourge();
-// }
-
 // Check for scourge destruction and spawn new ones
 document.addEventListener('DOMNodeRemoved', function (event) {
     if (event.target && event.target.classList.contains('scourge')) {
@@ -85,9 +80,6 @@ document.addEventListener('DOMNodeRemoved', function (event) {
     }
 });
 														  
-														 
-														  
-
 const gameArea = document.getElementById('gameArea');
 const gameAreaRect = gameArea.getBoundingClientRect();
 console.log('Game Area Rect:', gameAreaRect);
@@ -139,7 +131,7 @@ const asteroidImages = [
        
     }
 document.addEventListener('DOMContentLoaded', function () {
-    const gameArea = document.getElementById('gameArea');
+    let gameArea = document.getElementById('gameArea');
 
     // Function to shoot laser towards mouse position
     function shootLaser(event) {
@@ -278,11 +270,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
-				 
- 
-
-
-
     // Function to add points to the score
     function addToScore(points) {
         const scoreDisplay = document.getElementById('scoreDisplay');
@@ -299,13 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 
-    // Function to play the sound effect when a scourge is destroyed
-    function playScourgeDestroyedSound() {
-        // Get the audio element
-        const soundEffect = document.getElementById('scourgeDestroyedSound');
-        // Play the sound effect
-        soundEffect.play();
-    }
+
 
     // Event listener for mouse click to shoot laser
     gameArea.addEventListener('click', shootLaser);
@@ -336,6 +317,86 @@ function checkForScourgeImpact() {
     }
     return false;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const gameArea = document.getElementById('gameArea');
+
+    // Add event listeners to change the cursor when entering and leaving the game area
+    gameArea.addEventListener('mouseenter', function() {
+        gameArea.style.cursor = 'url("assets/cursor.png"), auto'; // Change to custom cursor
+        // Alternatively, use a predefined cursor
+        // gameArea.style.cursor = 'crosshair';
+    });
+
+    gameArea.addEventListener('mouseleave', function() {
+        gameArea.style.cursor = 'auto'; // Revert to default cursor
+    });
+});
+
+function moveMutalisk() {
+    const divs = document.querySelectorAll('.mutalisk');
+    const target = document.getElementById('battleCruiserHitBox');
+    const targetRect = target.getBoundingClientRect();
+    const targetCenterX = targetRect.left + targetRect.width / 2; // Calculate the x-coordinate of the center of the target
+    const targetCenterY = targetRect.top + targetRect.height / 2; // Calculate the y-coordinate of the center of the target
+
+    divs.forEach(div => {
+        // Calculate the angle between the mutalisk and the target
+        const dx = targetCenterX - (div.offsetLeft + div.offsetWidth / 2); // Calculate the horizontal distance between the centers
+        const dy = targetCenterY - (div.offsetTop + div.offsetHeight / 2); // Calculate the vertical distance between the centers
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+        // Set the rotation angle of the mutalisk image
+        //div.style.transform = `rotate(${angle}deg)`;
+
+        // Move the mutalisk towards the target
+        let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
+        let transitionString = `all ${speed}s ease-in-out`;
+        div.style.transition = transitionString;
+        div.style.top = targetCenterY + "px";
+        div.style.left = targetCenterX + "px";
+
+        //setInterval(checkForOptimalDistance, 500);
+    });
+}
+
+function createMutalisk() {
+    const mutalisk = document.createElement('img');
+    mutalisk.className = 'mutalisk';
+    mutalisk.src = 'assets/mutalisk.png';
+    mutalisk.alt = 'Mutalisk Image';
+
+    // Randomly position the mutalisk at the top of the screen
+    const gameAreaWidth = 2500; // Width of the game area
+    const randomX = Math.random() * (gameAreaWidth - 20);
+    mutalisk.style.position = 'absolute';
+    mutalisk.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
+    mutalisk.style.left = `${randomX}px`;
+    document.getElementById('gameArea').appendChild(mutalisk);
+
+    // Move the newly spawned mutalisk
+    moveMutalisk();
+}
+
+// Function to create new mutalisk after delay
+function spawnNewMutalisk() {
+    if(isActive){
+        createMutalisk();
+    }
+    
+}
+document.addEventListener('mutationObserver', function (event) {
+    if (event.target && event.target.classList.contains('mutalisk')) {
+        checkForMutaliskImpact();
+    }
+});
+
+// Check for mutalisk destruction and spawn new ones
+document.addEventListener('mutationObserver', function (event) {
+    if (event.target && event.target.classList.contains('mutalisk')) {
+        spawnNewMutalisk();
+    }
+});
 
 function moveScourge() {
     const divs = document.querySelectorAll('.scourge');
@@ -411,13 +472,13 @@ gameArea.addEventListener('click', function () {
 })
 
 // Get the modal
-var loseModal = document.getElementById("loseModal");
+let loseModal = document.getElementById("loseModal");
 
 // Get the <span> element that closes the modal
-var closeButton = document.getElementById("loseClose");
+let closeButton = document.getElementById("loseClose");
 
 // When the user clicks on the button, open the modal
-var openLoseModal = function () {
+let openLoseModal = function () {
     loseModal.style.display = "block";
 }
 
@@ -458,7 +519,8 @@ function startGame() {
     }
 
     createScourge(); // Call the function to spawn scourge when the game begins
-    // Spawn asteroids at regular intervals
-    setInterval(createAsteroid, spawnInterval);
+    setInterval(createAsteroid, spawnInterval);     // Spawn asteroids at regular intervals
     moveScourge(); // Start moving the scourge towards the battlecruiser
+    createMutalisk();
+    moveMutalisk();
 }
