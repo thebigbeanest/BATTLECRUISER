@@ -1,55 +1,5 @@
-let speedMin = 12;
-let speedMax = 12;
-
-
-// function destroy() {
-//   const div = document.querySelectorAll('.scourge');
-//   console.log("clicked");
-//   div.style.display = 'none';
-// }
-
-// function moveScourge() {
-//     const divs = document.querySelectorAll('.scourge');
-//     const target = document.getElementById('battleCruiserHitBox');
-//     const rect = target.getBoundingClientRect();
-  
-//     divs.forEach(div => {
-//       // Calculate the angle between the scourge and the target
-//       const dx = rect.left - div.offsetLeft;
-//       const dy = rect.top - div.offsetTop;
-//       const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-  
-//       // Set the rotation angle of the scourge image
-//       div.style.transform = `rotate(${angle}deg)`;
-  
-//       // Move the scourge towards the target
-//       let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
-//       let transitionString = `all ${speed}s ease-in-out`;
-//       div.style.transition = transitionString;
-//       div.style.top = rect.top + height + "px";
-//       div.style.left = rect.left + width + "px";
-//     });
-// }
-
-// function createScourge() {
-//     const scourge = document.createElement('img');
-//     scourge.className = 'scourge';
-//     scourge.src = 'assets/SCOURGE.png';
-//     scourge.alt = 'Scourge Image';
-    
-//     // Randomly position the scourge at the top of the screen
-//     const gameAreaWidth = 3000; // Width of the game area
-//     const randomX = Math.random() * (gameAreaWidth - 20);
-//     scourge.style.position = 'absolute';
-//     scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
-//     scourge.style.left = `${randomX}px`;
-//     document.getElementById('gameArea').appendChild(scourge);
-
-//     // Move the newly spawned scourge
-//     moveScourge();
-// }
-
-
+let speedMin = 10;
+let speedMax = 10;
 
 function checkWin() {
     const scoreDisplay = document.getElementById('scoreDisplay');
@@ -318,7 +268,7 @@ function checkForCollision(laser) {
             
             // Add 10 points to the score
             addToScore(10);
-            
+            checkWin();
             return true;
         }
     }
@@ -442,17 +392,12 @@ document.addEventListener('mutationObserver', function(event) {
         spawnNewScourge();
     }
 });
-
-
     const laserSound = document.getElementById('laserHit1');
     gameArea.addEventListener('click', function() {
         const music = new Audio('assets/laserHit1.wav');
         music.loop = false; // loop the music
         music.play();
     })
-
-
-  
   const playButton = document.getElementById('musicButton');
     playButton.addEventListener('click', function() {
         // Play music1
