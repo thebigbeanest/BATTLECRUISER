@@ -242,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 12000); // 12 seconds in milliseconds
         }
     }
+
     // Function to check for collision with scourge
     function checkForCollision(laser) {
         const scourgeList = document.querySelectorAll('.scourge');
@@ -333,70 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function moveMutalisk() {
-    const divs = document.querySelectorAll('.mutalisk');
-    const target = document.getElementById('battleCruiserHitBox');
-    const targetRect = target.getBoundingClientRect();
-    const targetCenterX = targetRect.left + targetRect.width / 2; // Calculate the x-coordinate of the center of the target
-    const targetCenterY = targetRect.top + targetRect.height / 2; // Calculate the y-coordinate of the center of the target
 
-    divs.forEach(div => {
-        // Calculate the angle between the mutalisk and the target
-        const dx = targetCenterX - (div.offsetLeft + div.offsetWidth / 2); // Calculate the horizontal distance between the centers
-        const dy = targetCenterY - (div.offsetTop + div.offsetHeight / 2); // Calculate the vertical distance between the centers
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-        // Set the rotation angle of the mutalisk image
-        //div.style.transform = `rotate(${angle}deg)`;
-
-        // Move the mutalisk towards the target
-        let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
-        let transitionString = `all ${speed}s ease-in-out`;
-        div.style.transition = transitionString;
-        div.style.top = targetCenterY + "px";
-        div.style.left = targetCenterX + "px";
-
-        //setInterval(checkForOptimalDistance, 500);
-    });
-}
-
-function createMutalisk() {
-    const mutalisk = document.createElement('img');
-    mutalisk.className = 'mutalisk';
-    mutalisk.src = 'assets/mutalisk.png';
-    mutalisk.alt = 'Mutalisk Image';
-
-    // Randomly position the mutalisk at the top of the screen
-    const gameAreaWidth = 2500; // Width of the game area
-    const randomX = Math.random() * (gameAreaWidth - 20);
-    mutalisk.style.position = 'absolute';
-    mutalisk.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
-    mutalisk.style.left = `${randomX}px`;
-    document.getElementById('gameArea').appendChild(mutalisk);
-
-    // Move the newly spawned mutalisk
-    moveMutalisk();
-}
-
-// Function to create new mutalisk after delay
-function spawnNewMutalisk() {
-    if(isActive){
-        createMutalisk();
-    }
-    
-}
-document.addEventListener('mutationObserver', function (event) {
-    if (event.target && event.target.classList.contains('mutalisk')) {
-        checkForMutaliskImpact();
-    }
-});
-
-// Check for mutalisk destruction and spawn new ones
-document.addEventListener('mutationObserver', function (event) {
-    if (event.target && event.target.classList.contains('mutalisk')) {
-        spawnNewMutalisk();
-    }
-});
 
 function moveScourge() {
     const divs = document.querySelectorAll('.scourge');
@@ -471,6 +409,103 @@ gameArea.addEventListener('click', function () {
     music.play();
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function moveMutalisk() {
+    const divs = document.querySelectorAll('.mutalisk');
+    const target = document.getElementById('battleCruiserHitBox');
+    const targetRect = target.getBoundingClientRect();
+    const targetCenterX = targetRect.left + targetRect.width / 2; // Calculate the x-coordinate of the center of the target
+    const targetCenterY = targetRect.top + targetRect.height / 2; // Calculate the y-coordinate of the center of the target
+
+    divs.forEach(div => {
+        // Calculate the angle between the scourge and the target
+        const dx = targetCenterX - (div.offsetLeft + div.offsetWidth / 2); // Calculate the horizontal distance between the centers
+        const dy = targetCenterY - (div.offsetTop + div.offsetHeight / 2); // Calculate the vertical distance between the centers
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+        // Set the rotation angle of the mutalisk image
+        div.style.transform = `rotate(${angle}deg)`;
+
+        // Move the mutalisk towards the target
+        let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
+        let transitionString = `all ${speed}s ease-in-out`;
+        div.style.transition = transitionString;
+        div.style.top = targetCenterY + "px";
+        div.style.left = targetCenterX + "px";
+
+    });
+}
+
+function createMutalisk() {
+    const mutalisk = document.createElement('img');
+    mutalisk.className = 'mutalisk';
+    mutalisk.src = 'assets/mutalisk.png';
+    mutalisk.alt = 'Mutalisk Image';
+
+    // Randomly position the scourge at the top of the screen
+    const gameAreaWidth = 2500; // Width of the game area
+    const randomX = Math.random() * (gameAreaWidth - 20);
+    mutalisk.style.position = 'absolute';
+    mutalisk.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
+    mutalisk.style.left = `${randomX}px`;
+    document.getElementById('gameArea').appendChild(mutalisk);
+
+    // Move the newly spawned scourge
+    moveMutalisk();
+}
+
+// Function to create new scourge after delay
+function spawnNewMutalisk() {
+    if(isActive){
+        createMutalisk();
+    }
+    
+}
+
+// Check for scourge destruction and spawn new ones
+document.addEventListener('mutationObserver', function (event) {
+    if (event.target && event.target.classList.contains('mutalisk')) {
+        spawnNewMutalisk();
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Get the modal
 let loseModal = document.getElementById("loseModal");
 
@@ -498,7 +533,6 @@ const startButton = document.getElementById('start');
 startButton.onclick=function(event){
     startGame();
 }
-
 const playButton = document.getElementById('musicButton');
 playButton.addEventListener('click', function () {
     // Play music1
@@ -511,16 +545,16 @@ function startGame() {
         document.body.removeChild(winScreen);
     }
     clearScourge();
-    isActive=true;
+    isActive = true;
     //Initial spawning of scourge
     const numberOfScourge = 10; // Number of initial scourge to spawn
+    const numberOfMutalisk = 2;
     for (let i = 0; i < numberOfScourge; i++) {
-       spawnNewScourge();
+        spawnNewScourge();
     }
 
     createScourge(); // Call the function to spawn scourge when the game begins
-    setInterval(createAsteroid, spawnInterval);     // Spawn asteroids at regular intervals
+    setInterval(createAsteroid, spawnInterval); // Spawn asteroids at regular intervals
     moveScourge(); // Start moving the scourge towards the battlecruiser
-    createMutalisk();
-    moveMutalisk();
+    createMutalisk(); // Spawn mutalisks when the game begins
 }

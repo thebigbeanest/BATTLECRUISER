@@ -8,7 +8,6 @@ A game where you control a large Battlecruiser in the center of the screen, figh
 - Set healthpoints for the Battlecruiser and Scourge
 - Set sounds for the game
 - Set a winning condition / score and play a new screen + winning gif when the level is complete.
-- Create a main menu that navigates to the actual game when clicked, etc.
 
 ### Note
 - Removed README file as all daily updates are already summarized inside git commit update notes.
@@ -30,4 +29,5 @@ A game where you control a large Battlecruiser in the center of the screen, figh
 - https://stackoverflow.com/questions/58559992/how-to-move-element-from-one-point-to-another-with-animation
 - https://gist.github.com/straker/afc4e2a30b6df772a5f9f6ef01751d41
 - https://stackoverflow.com/questions/14560302/html-line-drawing-without-canvas-just-js
+- https://www.w3schools.com/js/js_loop_while.asp
 - 
