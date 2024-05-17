@@ -3,13 +3,7 @@ let speedMax = 12;
 let isActive = false;
 let winScore = 1000;
 let scoreDisplay = document.getElementById('scoreDisplay');
-
-					 
-																 
-												   
-	
-					   
-								   
+		   
 const winScreen = document.createElement('div');
             winScreen.textContent = 'You Win!';
             winScreen.style.position = 'fixed';
@@ -27,56 +21,6 @@ const winScreen = document.createElement('div');
             document.onmousedown = () => document.addEventListener("mousemove", handler);
             document.onmouseup = () => document.removeEventListener("mousemove", handler);
             document.onselectstart = () => document.removeEventListener("mousemove", handler);
-
-// function destroy() {
-//   const div = document.querySelectorAll('.scourge');
-//   console.log("clicked");
-//   div.style.display = 'none';
-// }
-
-// function moveScourge() {
-//     const divs = document.querySelectorAll('.scourge');
-//     const target = document.getElementById('battleCruiserHitBox');
-//     const rect = target.getBoundingClientRect();
-
-//     divs.forEach(div => {
-//       // Calculate the angle between the scourge and the target
-//       const dx = rect.left - div.offsetLeft;
-//       const dy = rect.top - div.offsetTop;
-//       const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-//       // Set the rotation angle of the scourge image
-//       div.style.transform = `rotate(${angle}deg)`;
-
-//       // Move the scourge towards the target
-//       let speed = Math.floor(Math.random() * (speedMax - speedMin + 1) + speedMin);
-//       let transitionString = `all ${speed}s ease-in-out`;
-//       div.style.transition = transitionString;
-//       div.style.top = rect.top + height + "px";
-//       div.style.left = rect.left + width + "px";
-//     });
-// }
-
-// function createScourge() {
-//     const scourge = document.createElement('img');
-//     scourge.className = 'scourge';
-//     scourge.src = 'assets/SCOURGE.png';
-//     scourge.alt = 'Scourge Image';
-
-//     // Randomly position the scourge at the top of the screen
-//     const gameAreaWidth = 3000; // Width of the game area
-//     const randomX = Math.random() * (gameAreaWidth - 20);
-//     scourge.style.position = 'absolute';
-//     scourge.style.top = '30px'; // -100 + Spawns them outside the player's viewing range, keep it in the positives to make sure they're still spawning.
-//     scourge.style.left = `${randomX}px`;
-//     document.getElementById('gameArea').appendChild(scourge);
-
-//     // Move the newly spawned scourge
-//     moveScourge();
-// }
-
-
-
 
 function clearScourge(){
     scoreDisplay.innerText=0;    
@@ -194,19 +138,6 @@ const asteroidImages = [
 
        
     }
-
-										   
-											   
-   
-
-							  
-																 
-										   
-					  
- 
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const gameArea = document.getElementById('gameArea');
 
@@ -255,19 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, 10); // Interval time in milliseconds
     }
-
-
-
-								   
-					 
-						  
-						  
-							  
-											
-  
-
-																	 
-											
+						
     // Array of sound effect file paths
     const deathSounds = [
         'assets/zavdth00.wav',
@@ -275,11 +194,6 @@ document.addEventListener('DOMContentLoaded', function () {
         'assets/scourgeDeath.wav',
         // Add more sound effect paths as needed
     ];
-	
-									 
-				 
- 
-
     // Function to play a random sound effect when a scourge is destroyed
     function playRandomScourgeDestroyedSound() {
         // Randomly select a sound effect from the array
@@ -294,15 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
 								 
 					   
     }
-   
 
-						 
-							
-									 
-							
-								 
-
-																			 
     let yamatoCannonReady = true;
 
     // Event listener for Spacebar key press
@@ -317,15 +223,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Play charging sound effect
             playChargingSound();
             const yamatoCharge =
-
-														 
-						   
-									 
-																		  
-												
-									 
-				   
-			 
                 // Set yamatoCannonReady to false to prevent firing again immediately
                 yamatoCannonReady = false;
 
@@ -353,10 +250,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 12000); // 12 seconds in milliseconds
         }
     }
- 
-
-    // Other functions remain the same...
-
     // Function to check for collision with scourge
     function checkForCollision(laser) {
         const scourgeList = document.querySelectorAll('.scourge');
@@ -417,21 +310,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for mouse click to shoot laser
     gameArea.addEventListener('click', shootLaser);
 });
-
-				  
-													
-																
-							  
-											
-					
-							 
-											  
-										  
-						 
-						  
-							 
- 
-
 // Function to check for collision with scourge
 function checkForScourgeImpact() {
     const scourgeList = document.querySelectorAll('.scourge');
